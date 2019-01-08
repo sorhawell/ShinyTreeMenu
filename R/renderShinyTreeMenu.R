@@ -1,13 +1,3 @@
-#' Render the ShinyTreeMenu HTML
-#'
-#'
-#' This function should be run within the Shiny \code{\link[shiny]{callModule}}
-#' function and renders a reactive ShinyTreeMenu HTML.
-#'
-#'
-#' renderShinyTreeMenu is a dynamic HTML rendering function, that
-#' runs within the Shiny \code{\link[shiny]{callModule}} function.
-#'
 #' renderShinyTreeMenu renders the initial treemenu as a reactive
 #' Shiny UI Output and this treemenu can then be updated using
 #' \code{\link{updateShinyTreeMenu}}.
@@ -18,10 +8,14 @@
 #'
 #' @param treedata data.table; treedata - see \code{\link{ShinyTreeMenuHTML}} for more details.
 #' @param level_icons character; Names of fa-icons to use for the tree - see \code{\link{ShinyTreeMenuHTML}} for more details.
+#' @param input shiny modelue
+#' @param output shiny modelue
+#' @param session  shiny modelue
+#' @param reactive_level_icons bool, are level_icons be reactive as treedata?
 #'
 #' @seealso \code{\link{ShinyTreeMenuOutput}}, \code{\link{updateShinyTreeMenu}} and \code{\link{ShinyTreeMenuHTML}}
 #'
-#' @examples
+#' @examples "blop" #none so far
 #'
 #'
 #' if (interactive()) {
@@ -78,11 +72,13 @@
 #'
 #'
 #' @export
-renderShinyTreeMenu <- function(input, output, session, treedata, level_icons){
+renderShinyTreeMenu <- function(input, output, session, treedata, level_icons,reactive_level_icons=FALSE){
 
   if(!shiny::is.reactive(treedata)) stop("treedata has to be a reactive expression")
 
   output$treemenu <- shiny::renderUI({
+
+if(reactive_level_icons) level_icons = level_icons()
 
     treemenuout <-
       ShinyTreeMenu::ShinyTreeMenuHTML(
